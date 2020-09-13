@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
-use DB;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
@@ -37,8 +37,8 @@ class LoginController extends Controller
             return $this->sendLockoutResponse($request);
         }
 
-        $email_exists = DB::select('select * from users where email = ?', [$request->email]);
-
+        $email_exists = User::where('email', $request->email)->first();
+        
         if ( empty($email_exists) )
         {
             $this->incrementLoginAttempts($request);
